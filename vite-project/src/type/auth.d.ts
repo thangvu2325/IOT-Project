@@ -1,0 +1,14 @@
+export type registerType = {
+  username: string;
+  email: string;
+  password: string;
+};
+export type loginType = Pick<registerType, "username" | "password">;
+export type userType = {
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  phone: stromg;
+  customer_Id: string;
+};

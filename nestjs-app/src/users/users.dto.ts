@@ -1,0 +1,19 @@
+import { Expose } from 'class-transformer';
+import { BaseDto } from 'src/common/base.dto';
+import { CustomersDto } from 'src/customers/customers.dto';
+
+export class UsersDto extends BaseDto {
+  @Expose()
+  username: string;
+  password: string;
+  @Expose()
+  avatar: string;
+  @Expose()
+  email: string;
+  @Expose()
+  isActive: boolean;
+  @Expose()
+  roles: string;
+  @Expose()
+  customer: CustomersDto;
+}
