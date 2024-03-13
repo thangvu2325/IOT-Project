@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import devicesSlice from "./slices/devicesSlice";
 import authSlice from "./slices/authSlice";
+import customersSlice from "./slices/customersSlice";
 import {
   persistStore,
   persistReducer,
@@ -26,6 +27,7 @@ export const store = configureStore({
   reducer: {
     persistedReducer,
     devices: devicesSlice,
+    customer: customersSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

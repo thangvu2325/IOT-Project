@@ -32,6 +32,7 @@ async function bootstrap() {
   });
   const coapService = app.get(CoapService);
   coapService.startServer();
+  coapService.sendRequest();
   // This is necessary to make the hot-reload work with Docker
 }
 bootstrap();

@@ -24,8 +24,8 @@ export class UserEntity extends BaseEntity {
   phone: string;
   @Column({
     type: 'enum',
-    enum: ['Administrator', 'Moderator', 'Quản Lý', 'Nhân Viên'],
-    default: 'Nhân Viên',
+    enum: ['Administrator', 'Moderator', 'Khách Hàng'],
+    default: 'Khách Hàng',
   })
   role: string;
   @OneToOne(() => CustomersEntity)

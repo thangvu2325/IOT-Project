@@ -3,22 +3,21 @@ import { ThemeProvider } from "./components/theme-provider";
 import { FC, Fragment, FunctionComponent, Suspense, lazy } from "react";
 import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
+import viVN from "antd/es/locale/vi_VN"; // Import ngôn ngữ tiếng Việt từ Ant Design
 import GlobalStyle from "./components/GlobalStyle";
 import { privateRoutes, publicRoutes } from "./routes";
-import useMessage from "./hooks/useMessage";
 import { ConfigProvider } from "antd";
 import LoadingScreen from "./components/LoadingScreen";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { PersistGate } from "redux-persist/integration/react";
 const DefaultLayout = lazy(() => import("@/layouts/DefaultLayout"));
 const App: FC = () => {
-  const { messageConnection } = useMessage();
-  messageConnection("test1", "test2");
   return (
     <PersistGate loading={null} persistor={persistor}>
       <Provider store={store}>
         <GlobalStyle>
           <ConfigProvider
+            locale={viVN}
             theme={{
               token: {
                 fontSizeHeading1: 18,
@@ -26,6 +25,9 @@ const App: FC = () => {
                 fontSizeHeading3: 14,
                 fontSizeHeading4: 12,
                 fontSizeHeading5: 10,
+                colorBgBase: "white",
+                colorPrimary: "#1677ff",
+                colorText: "black",
               },
               components: {
                 Layout: {

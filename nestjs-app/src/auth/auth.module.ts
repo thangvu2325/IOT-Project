@@ -30,5 +30,6 @@ import { CustomersEntity } from 'src/customers/customers.entity';
     MailService,
     CustomersService,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

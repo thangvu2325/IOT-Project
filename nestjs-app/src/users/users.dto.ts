@@ -13,7 +13,7 @@ export class UsersDto extends BaseDto {
   @Expose()
   isActive: boolean;
   @Expose()
-  roles: string;
+  role: string;
   @Expose()
   customer: CustomersDto;
 }

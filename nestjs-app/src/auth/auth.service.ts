@@ -7,9 +7,10 @@ import { LoginDto } from './Dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from 'src/redis/redis.service';
 import { UsersDto } from 'src/users/users.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { CustomersService } from 'src/customers/Customers.service';
+import { CustomersDto } from 'src/customers/customers.dto';
 const EXPIRE_TIME = 20 * 1000;
 
 @Injectable()
@@ -24,12 +25,16 @@ export class AuthService {
   ) {}
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
+    const customer = plainToInstance(CustomersDto, user.customer, {
+      excludeExtraneousValues: true,
+    });
     const payload = {
       username: user.username,
       sub: {
         role: user.role,
       },
     };
+
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: '20s',
       secret: process.env.jwtSecretKey,
@@ -45,6 +50,7 @@ export class AuthService {
       user: plainToClass(
         UsersDto,
         {
+          customer_id: customer.customer_id,
           ...user,
         },
         { excludeExtraneousValues: true },
@@ -72,11 +78,7 @@ export class AuthService {
     return { result: 'success' };
   }
   async validateUser(dto: LoginDto) {
-    const user = await this.userService.findOne({
-      where: {
-        username: dto.username,
-      },
-    });
+    const user = await this.userService.findOneUserWithUsername(dto.username);
     if (user && (await compare(dto.password, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -84,13 +86,15 @@ export class AuthService {
     }
     throw new UnauthorizedException();
   }
-
-  async refreshToken(userDto: UsersDto) {
-    const user = await this.userService.findOne({
-      where: {
-        username: userDto.username,
-      },
+  async verifyToken(token: string) {
+    return await this.jwtService.verify(token, {
+      secret: process.env.jwtSecretKey,
     });
+  }
+  async refreshToken(userDto: UsersDto) {
+    const user = await this.userService.findOneUserWithUsername(
+      userDto.username,
+    );
     const payload = {
       username: user.username,
       sub: {

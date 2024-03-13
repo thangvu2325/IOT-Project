@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useAppDispatch } from "@/redux/hooks";
+import authService from "@/services/authService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { Fragment, FunctionComponent } from "react";
@@ -9,8 +11,8 @@ import { z } from "zod";
 interface RegisterPageProps {}
 const schema = z
   .object({
-    nickName: z.string().min(1),
-    username: z.string().min(6),
+    username: z.string().min(1),
+    email: z.string().min(1),
     password: z.string().min(6),
     repassword: z.string().min(6),
     confirmRule: z.boolean(),
@@ -31,13 +33,12 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
+  const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repassword, confirmRule, ...user } = data;
-    console.log(user);
     try {
-      //   await registerRequest(axiosClient, user, router);
-      //   alert("Đăng Ký thành công!!");
+      await authService.register(user, dispatch);
     } catch (error) {
       console.log(error);
     }
@@ -65,13 +66,13 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                 <input
                   placeholder="Your Name"
                   className="h-[60px] leading-[60px] w-[100%] rounded-[7px] outline-[#05f] block border-[2px] border-[#eee] border-solid py-[6px] pl-[48px] pr-[12px] text-[#212529] font-[600] text-[14px]"
-                  {...register("nickName", {
+                  {...register("username", {
                     required: "Field này là bắt buộc.",
                   })}
                 ></input>
-                {errors.nickName ? (
+                {errors.username ? (
                   <span className="text-[red] text-[14px] pl-[16px] mb-[-12px] block">
-                    {errors.nickName?.message}
+                    {errors.username?.message}
                   </span>
                 ) : (
                   ""
@@ -86,13 +87,13 @@ const RegisterPage: FunctionComponent<RegisterPageProps> = () => {
                 <input
                   placeholder="Your Email Address"
                   className="h-[60px] leading-[60px] w-[100%] rounded-[7px] outline-[#05f] block border-[2px] border-[#eee] border-solid py-[6px] pl-[48px] pr-[12px] text-[#212529] font-[600] text-[14px]"
-                  {...register("username", {
+                  {...register("email", {
                     required: "Field này là bắt buộc.",
                   })}
                 ></input>
-                {errors.username ? (
+                {errors.email ? (
                   <span className="text-[red] text-[14px] pl-[16px] mb-[-12px] block">
-                    {errors.username?.message}
+                    {errors.email?.message}
                   </span>
                 ) : (
                   ""

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { config } from "@/config";
 import {
   loginFailed,
   loginStart,
@@ -10,18 +11,16 @@ import {
   registerStart,
   registerSuccess,
 } from "@/redux/slices/authSlice";
+import { AppDispatch } from "@/redux/store";
 import { loginType, registerType } from "@/type/auth";
 import { Dispatch } from "@reduxjs/toolkit";
-import { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
+import { NavigateFunction } from "react-router";
 
-const register = async (
-  axiosClient: AxiosInstance,
-  data: registerType,
-  dispatch: Dispatch
-) => {
+const register = async (data: registerType, dispatch: Dispatch) => {
   try {
     dispatch(registerStart());
-    const res = await axiosClient.post("/auth/register", data);
+    const res = await axios.post(config.baseUrl + "/auth/register", data);
     dispatch(registerSuccess());
     return res.data;
   } catch (error) {
@@ -31,14 +30,15 @@ const register = async (
   }
 };
 const login = async (
-  axiosClient: AxiosInstance,
   data: loginType,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  navigate: NavigateFunction
 ) => {
   try {
     dispatch(loginStart());
-    const res = await axiosClient.post("/auth/login", data);
+    const res = await axios.post(config.baseUrl + "/auth/login", data);
     dispatch(loginSuccess(res.data));
+    navigate("/");
     return res.data;
   } catch (error: any) {
     dispatch(loginFailed(error.response.data.message));
@@ -47,20 +47,16 @@ const login = async (
   }
 };
 export const logOut = async (
-  axiosClient: AxiosInstance,
-  userId: string,
-  dispatch: Dispatch
+  dispatch: AppDispatch,
+  id: string,
+  navigate: NavigateFunction,
+  axiosClient: AxiosInstance
 ) => {
   dispatch(logOutStart());
   try {
-    await axiosClient.post(
-      "http://localhost:3001/auth/logout",
-      { id: userId },
-      {
-        withCredentials: true,
-      }
-    );
+    await axiosClient.post("/auth/logout", { id: id });
     dispatch(logOutSuccess());
+    navigate("/login");
   } catch (err) {
     dispatch(logOutFailed());
   }

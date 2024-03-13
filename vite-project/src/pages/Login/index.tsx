@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppDispatch } from "@/redux/hooks";
 import authService from "@/services/authService";
-import { createAxios } from "@/services/createInstance";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLock, IconMail } from "@tabler/icons-react";
 import { useEffect, useRef, Fragment, FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 interface LoginPageProps {}
@@ -46,12 +45,12 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
     },
   });
   const rememberCheck = useRef<HTMLInputElement>(null);
-  const axiosClient = createAxios("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     remember(rememberCheck, data);
     try {
-      await authService.login(axiosClient, data, dispatch);
+      await authService.login(data, dispatch, navigate);
     } catch (error) {
       console.log(error);
     }

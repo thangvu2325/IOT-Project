@@ -4,9 +4,10 @@ import { UsersDto } from './users.dto';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { MysqlBaseService } from 'src/common/mysql/base.service';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { MailService } from 'src/mail/mail.service';
+import { CustomersDto } from 'src/customers/customers.dto';
 
 @Injectable()
 export class UsersService extends MysqlBaseService<UserEntity, UsersDto> {
@@ -21,7 +22,9 @@ export class UsersService extends MysqlBaseService<UserEntity, UsersDto> {
   async findAll(
     query,
   ): Promise<{ users: Array<UsersDto>; usersCount: number }> {
-    const qb = await this.userReposity.createQueryBuilder('user');
+    const qb = await this.userReposity
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.customer', 'customers');
 
     qb.where('1 = 1');
 
@@ -38,28 +41,39 @@ export class UsersService extends MysqlBaseService<UserEntity, UsersDto> {
     }
 
     const users = await qb.getMany();
-    const usersDtoArray = users.map((user) => {
-      return plainToClass(
-        UsersDto,
-        {
-          ...user,
-        },
-        { excludeExtraneousValues: true },
-      );
-    });
+    const usersDtoArray = users
+      .filter((user) => user.role !== 'Admin')
+      .map((user) => {
+        const customer = user.customer
+          ? plainToInstance(CustomersDto, user.customer, {
+              excludeExtraneousValues: true,
+            })
+          : null;
+        return plainToClass(
+          UsersDto,
+          {
+            ...user,
+            customer,
+          },
+          { excludeExtraneousValues: true },
+        );
+      });
 
     return { users: usersDtoArray, usersCount };
   }
-  async findUserByEmail(email: string): Promise<UserEntity | null> {
+  async findOneUserWithUsername(username: string): Promise<UserEntity | null> {
     const user = await this.userReposity
       .createQueryBuilder('user')
-      .where('user.email = :email', { email })
+      .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.customer', 'customer')
       .getOne();
 
     return user || null;
   }
-  async requestResetPassword(email: string): Promise<{ newPassword: string }> {
-    const user = await this.findUserByEmail(email);
+  async requestResetPassword(
+    username: string,
+  ): Promise<{ newPassword: string }> {
+    const user = await this.findOneUserWithUsername(username);
     if (!user) {
       throw new NotFoundException('User not found');
     }

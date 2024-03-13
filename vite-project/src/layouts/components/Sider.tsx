@@ -1,4 +1,4 @@
-import { ConfigProvider, Flex, Menu } from "antd";
+import { Button, ConfigProvider, Flex, Menu, message } from "antd";
 import { Fragment, FunctionComponent, useRef } from "react";
 import {
   IconChevronLeft,
@@ -7,11 +7,16 @@ import {
   IconSettings,
   IconUserCircle,
 } from "@tabler/icons-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { cn } from "@/lib/utils";
 import { IconIotConnection } from "@/components/ui/icon";
 import { routes } from "@/routes";
+import authService from "@/services/authService";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { userData } from "@/redux/selector";
+import { createAxios, tokenType } from "@/services/createInstance";
+import { loginSuccess } from "@/redux/slices/authSlice";
 
 type MenuItem = Required<MenuProps>["items"][number];
 interface SiderProps {
@@ -44,10 +49,10 @@ const Sider: FunctionComponent<SiderProps> = ({
   const refDiv = useRef<HTMLDivElement>(null);
   const MainMenuItems: MenuItem[] = [
     getItem(
-      <Link to={routes.homepage} className="whitespace-nowrap">
-        Trang Chủ
+      <Link to={routes.Dashboard} className="whitespace-nowrap">
+        Dashboard
       </Link>,
-      routes.homepage,
+      routes.Dashboard,
       <IconHome2></IconHome2>
     ),
     getItem(
@@ -84,17 +89,37 @@ const Sider: FunctionComponent<SiderProps> = ({
         <Fragment></Fragment>
       ),
     ]),
-    getItem("Thống Kê", "Thống Kê", <Fragment></Fragment>, [
+    getItem("Khách Hàng", "Customer Manager", <Fragment></Fragment>, [
       getItem(
-        <Link to={routes.deviceList} className="whitespace-nowrap">
-          Thống Kê Số Liệu
+        <Link to={routes.customerList} className="whitespace-nowrap">
+          Quản Lý Khách Hàng
         </Link>,
-        "Thống Kê Số Liệu",
+        routes.customerList,
         <Fragment></Fragment>
       ),
     ]),
   ];
-
+  const currentUser = useAppSelector(userData).currentUser;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const axiosClient = createAxios(
+    currentUser as tokenType,
+    dispatch,
+    loginSuccess
+  );
+  const handleLogout = async () => {
+    try {
+      await authService.logOut(
+        dispatch,
+        currentUser?.user.id ?? "",
+        navigate,
+        axiosClient
+      );
+      message.success("Đăng xuất thành công!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       ref={refDiv}
@@ -158,6 +183,11 @@ const Sider: FunctionComponent<SiderProps> = ({
           </div>
         </div>
       </ConfigProvider>
+      <div className="absolute bottom-0 h-20 left-0 right-0 bg-[#001529] rounded-md border-t-[1px] border-solid border-[#f0f0f0] flex items-center justify-center">
+        <Button type="primary" size="large" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     </div>
   );
 };

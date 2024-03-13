@@ -1,8 +1,15 @@
 import { userType } from "@/type";
 import { createSlice } from "@reduxjs/toolkit";
+export type currentUserType = {
+  user: userType;
+  backendTokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
+};
 interface AuthState {
   login: {
-    currentUser: userType;
+    currentUser: currentUserType;
     isFetching: boolean;
     errorMessage: string | null;
     successMessage: string | null;
@@ -23,7 +30,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     login: {
-      currentUser: {} as userType,
+      currentUser: {} as currentUserType,
       isFetching: false,
       errorMessage: null,
       successMessage: null,
@@ -72,7 +79,7 @@ const authSlice = createSlice({
     },
     logOutSuccess: (state) => {
       state.logout.isFetching = false;
-      state.login.currentUser = {} as userType;
+      state.login.currentUser = {} as currentUserType;
       state.logout.error = false;
     },
     logOutFailed: (state) => {

@@ -1,12 +1,22 @@
-import { FunctionComponent, ReactNode } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FunctionComponent, ReactNode, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { IconIotConnection } from "@/components/ui/icon";
+import { useAppSelector } from "@/redux/hooks";
+import { userData } from "@/redux/selector";
 
 interface AuthLayoutProps {
   children: ReactNode;
 }
 
 const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
+  const { isLogin } = useAppSelector(userData);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogin === true) {
+      navigate("/Dashboard");
+    }
+  }, [isLogin]);
   return (
     <div className="h-[100vh] overflow-hidden bg-[#fff]">
       <header className="fixed top-0 left-0 right-0 w-[100vw] h-[96px] flex items-center ">

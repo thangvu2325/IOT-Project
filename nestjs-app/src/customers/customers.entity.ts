@@ -2,7 +2,7 @@ import { Entity, Column, OneToMany, BeforeInsert } from 'typeorm';
 import { BaseEntity } from 'src/common/mysql/base.entity';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
 import { NotifiesEntity } from 'src/notifies/notifies.entity';
-import { DevicesEntity } from 'src/devices/devices.entity';
+import { DevicesEntity } from 'src/devices/entities/devices.entity';
 
 @Entity({
   name: 'customers',
@@ -30,7 +30,6 @@ export class CustomersEntity extends BaseEntity {
 
   @OneToMany(() => NotifiesEntity, (notifies) => notifies.customer)
   notifies: NotifiesEntity[];
-
   @BeforeInsert()
   async generateCustomerId() {
     // Tạo một mã customer_id duy nhất, ví dụ sử dụng UUID

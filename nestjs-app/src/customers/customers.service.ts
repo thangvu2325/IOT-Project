@@ -7,6 +7,7 @@ import { CustomersEntity } from './customers.entity';
 import { CustomersDto } from './customers.dto';
 import { UsersService } from 'src/users/users.service';
 import { UserEntity } from 'src/users/user.entity';
+import { DevicesDto } from 'src/devices/dto/devices.dto';
 
 @Injectable()
 export class CustomersService extends MysqlBaseService<
@@ -25,14 +26,13 @@ export class CustomersService extends MysqlBaseService<
   async findAll(
     query,
   ): Promise<{ customers: Array<CustomersDto>; customersCount: number }> {
-    const qb = await this.customersReposity.createQueryBuilder('customers');
-
+    const qb = await this.customersReposity
+      .createQueryBuilder('customers')
+      .leftJoinAndSelect('customers.devices', 'devices')
+      .leftJoinAndSelect('customers.user', 'user');
     qb.where('1 = 1');
-
     qb.orderBy('customers.createdAt', 'DESC'); // Corrected the alias to 'posts'
-
     const customersCount = await qb.getCount();
-
     if ('limit' in query) {
       qb.limit(query.limit);
     }
@@ -47,6 +47,15 @@ export class CustomersService extends MysqlBaseService<
         CustomersDto,
         {
           ...customer,
+          devices: customer.devices.map((device) => {
+            return plainToClass(
+              DevicesDto,
+              {
+                ...device,
+              },
+              { excludeExtraneousValues: true },
+            );
+          }),
         },
         { excludeExtraneousValues: true },
       );

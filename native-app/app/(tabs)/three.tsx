@@ -1,35 +1,148 @@
 import { StyleSheet } from "react-native";
-
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
+import FieldList, { item } from "@/components/ui/FieldList";
+import { FC, ReactNode, useState } from "react";
+import { IconButton, TextInput } from "react-native-paper";
+import React from "react";
 
-export default function TabThreeScreen() {
+export type userForm = {
+  email: string;
+  phone: string;
+  dia_chi: string;
+};
+export const FieldText: FC<{
+  title: string;
+  children: ReactNode;
+}> = ({ title, children }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Three</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/three.tsx" />
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        width: 280,
+      }}
+    >
+      <Text style={{ width: 60 }}>{title}</Text>
+      {children}
+    </View>
+  );
+};
+const items: ({
+  value,
+  setValue,
+}: {
+  value: userForm;
+  setValue: React.Dispatch<React.SetStateAction<userForm>>;
+}) => (() => item)[] = ({ value, setValue }) => [
+  () => {
+    const [isDisable, setIsDisable] = useState<boolean>(true);
+    return {
+      itemKey: 1,
+      left: (
+        <FieldText title="Email">
+          <TextInput
+            style={{ flex: 1, height: 40 }}
+            mode="outlined"
+            disabled={isDisable}
+            textContentType="emailAddress"
+            value={value.email}
+            onChangeText={(text) =>
+              setValue((prev) => ({ ...prev, email: text }))
+            }
+          ></TextInput>
+        </FieldText>
+      ),
+      right: (
+        <IconButton
+          icon="circle-edit-outline"
+          iconColor={"black"}
+          size={20}
+          onPress={() => setIsDisable(!isDisable)}
+        />
+      ),
+    };
+  },
+  () => {
+    const [isDisable, setIsDisable] = useState<boolean>(true);
+    return {
+      itemKey: 2,
+      left: (
+        <FieldText title="Phone">
+          <TextInput
+            style={{ flex: 1, height: 40 }}
+            mode="outlined"
+            disabled={isDisable}
+            value={value.phone}
+            textContentType="telephoneNumber"
+            onChangeText={(text) =>
+              setValue((prev) => ({ ...prev, phone: text }))
+            }
+          ></TextInput>
+        </FieldText>
+      ),
+      right: (
+        <IconButton
+          icon="circle-edit-outline"
+          iconColor={"black"}
+          size={20}
+          onPress={() => setIsDisable(!isDisable)}
+        />
+      ),
+    };
+  },
+  () => {
+    const [isDisable, setIsDisable] = useState<boolean>(true);
+    return {
+      itemKey: 3,
+      left: (
+        <FieldText title="Địa Chỉ">
+          <TextInput
+            style={{ flex: 1, height: 40 }}
+            mode="outlined"
+            disabled={isDisable}
+            value={value.dia_chi}
+            onChangeText={(text) =>
+              setValue((prev) => ({ ...prev, dia_chi: text }))
+            }
+          ></TextInput>
+        </FieldText>
+      ),
+      right: (
+        <IconButton
+          icon="circle-edit-outline"
+          iconColor={"black"}
+          size={20}
+          onPress={() => setIsDisable(!isDisable)}
+        />
+      ),
+    };
+  },
+];
+export default function TabThreeScreen() {
+  const [form, setForm] = useState<userForm>({
+    email: "thangvu2325@gmail.com",
+    phone: "0395177093",
+    dia_chi: "240 gò xoài",
+  });
+  console.log(form);
+  return (
+    <View style={styles.wrap}>
+      <View style={styles.container}>
+        <FieldList
+          title={<Text>Thông Tin Liên Hệ</Text>}
+          items={items({ value: form, setValue: setForm }).map((itemFn) =>
+            itemFn()
+          )}
+        ></FieldList>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrap: { height: "100%" },
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    display: "flex",
   },
 });
