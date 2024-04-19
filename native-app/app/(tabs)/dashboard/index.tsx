@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  useColorScheme,
 } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { FontAwesome } from "@expo/vector-icons";
@@ -11,17 +12,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import {
   Avatar,
-  Card,
   Divider,
-  FAB,
-  PaperProvider,
-  Portal,
+  IconButton,
+  Menu,
   Searchbar,
 } from "react-native-paper";
 import * as React from "react";
 import CircularProgress from "@/components/CircularProgress";
 import { deviceType } from "@/types";
-import { Link, router } from "expo-router";
+import Card from "./_component/card";
+import Colors from "@/constants/Colors";
+import { router } from "expo-router";
 
 const deviceList: deviceType[] = [
   {
@@ -188,211 +189,211 @@ const deviceList: deviceType[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  {
-    id: "5",
-    deviceId: "2",
-    fullname: "2",
-    email: "2",
-    phone: "2",
-    battery: {
-      source: "2",
-      voltage: 0,
-    },
-    sim: {
-      imsi: "2",
-    },
-    sensors: {
-      smokeValue: 0,
-    },
-    signal: {
-      band: "2",
-      deviceNetworkRssiDbm: 0,
-      gsmStatus: "2",
-      networkReport: {
-        absoluteRadioFrequencyChannel: "2",
-        areaTacChangeCount: "2",
-        cellChangeCount: "2",
-        cellId: "2",
-        connectionStatus: "2",
-        extendedDiscontinuousReception: "2",
-        ipAddress: "2",
-        mcc: "2",
-        mnc: "2",
-        referenceSignalReceivedPower: "2",
-        referenceSignalReceivedQuality: "2",
-        requestedActiveTime: "2",
-        requestedPeriodicTrackingAreaUpdate: "2",
-        tac: "2",
-        updatedAt: new Date(),
-      },
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "6",
-    deviceId: "2",
-    fullname: "2",
-    email: "2",
-    phone: "2",
-    battery: {
-      source: "2",
-      voltage: 0,
-    },
-    sim: {
-      imsi: "2",
-    },
-    sensors: {
-      smokeValue: 0,
-    },
-    signal: {
-      band: "2",
-      deviceNetworkRssiDbm: 0,
-      gsmStatus: "2",
-      networkReport: {
-        absoluteRadioFrequencyChannel: "2",
-        areaTacChangeCount: "2",
-        cellChangeCount: "2",
-        cellId: "2",
-        connectionStatus: "2",
-        extendedDiscontinuousReception: "2",
-        ipAddress: "2",
-        mcc: "2",
-        mnc: "2",
-        referenceSignalReceivedPower: "2",
-        referenceSignalReceivedQuality: "2",
-        requestedActiveTime: "2",
-        requestedPeriodicTrackingAreaUpdate: "2",
-        tac: "2",
-        updatedAt: new Date(),
-      },
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "7",
-    deviceId: "2",
-    fullname: "2",
-    email: "2",
-    phone: "2",
-    battery: {
-      source: "2",
-      voltage: 0,
-    },
-    sim: {
-      imsi: "2",
-    },
-    sensors: {
-      smokeValue: 0,
-    },
-    signal: {
-      band: "2",
-      deviceNetworkRssiDbm: 0,
-      gsmStatus: "2",
-      networkReport: {
-        absoluteRadioFrequencyChannel: "2",
-        areaTacChangeCount: "2",
-        cellChangeCount: "2",
-        cellId: "2",
-        connectionStatus: "2",
-        extendedDiscontinuousReception: "2",
-        ipAddress: "2",
-        mcc: "2",
-        mnc: "2",
-        referenceSignalReceivedPower: "2",
-        referenceSignalReceivedQuality: "2",
-        requestedActiveTime: "2",
-        requestedPeriodicTrackingAreaUpdate: "2",
-        tac: "2",
-        updatedAt: new Date(),
-      },
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "8",
-    deviceId: "2",
-    fullname: "2",
-    email: "2",
-    phone: "2",
-    battery: {
-      source: "2",
-      voltage: 0,
-    },
-    sim: {
-      imsi: "2",
-    },
-    sensors: {
-      smokeValue: 0,
-    },
-    signal: {
-      band: "2",
-      deviceNetworkRssiDbm: 0,
-      gsmStatus: "2",
-      networkReport: {
-        absoluteRadioFrequencyChannel: "2",
-        areaTacChangeCount: "2",
-        cellChangeCount: "2",
-        cellId: "2",
-        connectionStatus: "2",
-        extendedDiscontinuousReception: "2",
-        ipAddress: "2",
-        mcc: "2",
-        mnc: "2",
-        referenceSignalReceivedPower: "2",
-        referenceSignalReceivedQuality: "2",
-        requestedActiveTime: "2",
-        requestedPeriodicTrackingAreaUpdate: "2",
-        tac: "2",
-        updatedAt: new Date(),
-      },
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "9",
-    deviceId: "2",
-    fullname: "2",
-    email: "2",
-    phone: "2",
-    battery: {
-      source: "2",
-      voltage: 0,
-    },
-    sim: {
-      imsi: "2",
-    },
-    sensors: {
-      smokeValue: 0,
-    },
-    signal: {
-      band: "2",
-      deviceNetworkRssiDbm: 0,
-      gsmStatus: "2",
-      networkReport: {
-        absoluteRadioFrequencyChannel: "2",
-        areaTacChangeCount: "2",
-        cellChangeCount: "2",
-        cellId: "2",
-        connectionStatus: "2",
-        extendedDiscontinuousReception: "2",
-        ipAddress: "2",
-        mcc: "2",
-        mnc: "2",
-        referenceSignalReceivedPower: "2",
-        referenceSignalReceivedQuality: "2",
-        requestedActiveTime: "2",
-        requestedPeriodicTrackingAreaUpdate: "2",
-        tac: "2",
-        updatedAt: new Date(),
-      },
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
+  // {
+  //   id: "5",
+  //   deviceId: "2",
+  //   fullname: "2",
+  //   email: "2",
+  //   phone: "2",
+  //   battery: {
+  //     source: "2",
+  //     voltage: 0,
+  //   },
+  //   sim: {
+  //     imsi: "2",
+  //   },
+  //   sensors: {
+  //     smokeValue: 0,
+  //   },
+  //   signal: {
+  //     band: "2",
+  //     deviceNetworkRssiDbm: 0,
+  //     gsmStatus: "2",
+  //     networkReport: {
+  //       absoluteRadioFrequencyChannel: "2",
+  //       areaTacChangeCount: "2",
+  //       cellChangeCount: "2",
+  //       cellId: "2",
+  //       connectionStatus: "2",
+  //       extendedDiscontinuousReception: "2",
+  //       ipAddress: "2",
+  //       mcc: "2",
+  //       mnc: "2",
+  //       referenceSignalReceivedPower: "2",
+  //       referenceSignalReceivedQuality: "2",
+  //       requestedActiveTime: "2",
+  //       requestedPeriodicTrackingAreaUpdate: "2",
+  //       tac: "2",
+  //       updatedAt: new Date(),
+  //     },
+  //   },
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // },
+  // {
+  //   id: "6",
+  //   deviceId: "2",
+  //   fullname: "2",
+  //   email: "2",
+  //   phone: "2",
+  //   battery: {
+  //     source: "2",
+  //     voltage: 0,
+  //   },
+  //   sim: {
+  //     imsi: "2",
+  //   },
+  //   sensors: {
+  //     smokeValue: 0,
+  //   },
+  //   signal: {
+  //     band: "2",
+  //     deviceNetworkRssiDbm: 0,
+  //     gsmStatus: "2",
+  //     networkReport: {
+  //       absoluteRadioFrequencyChannel: "2",
+  //       areaTacChangeCount: "2",
+  //       cellChangeCount: "2",
+  //       cellId: "2",
+  //       connectionStatus: "2",
+  //       extendedDiscontinuousReception: "2",
+  //       ipAddress: "2",
+  //       mcc: "2",
+  //       mnc: "2",
+  //       referenceSignalReceivedPower: "2",
+  //       referenceSignalReceivedQuality: "2",
+  //       requestedActiveTime: "2",
+  //       requestedPeriodicTrackingAreaUpdate: "2",
+  //       tac: "2",
+  //       updatedAt: new Date(),
+  //     },
+  //   },
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // },
+  // {
+  //   id: "7",
+  //   deviceId: "2",
+  //   fullname: "2",
+  //   email: "2",
+  //   phone: "2",
+  //   battery: {
+  //     source: "2",
+  //     voltage: 0,
+  //   },
+  //   sim: {
+  //     imsi: "2",
+  //   },
+  //   sensors: {
+  //     smokeValue: 0,
+  //   },
+  //   signal: {
+  //     band: "2",
+  //     deviceNetworkRssiDbm: 0,
+  //     gsmStatus: "2",
+  //     networkReport: {
+  //       absoluteRadioFrequencyChannel: "2",
+  //       areaTacChangeCount: "2",
+  //       cellChangeCount: "2",
+  //       cellId: "2",
+  //       connectionStatus: "2",
+  //       extendedDiscontinuousReception: "2",
+  //       ipAddress: "2",
+  //       mcc: "2",
+  //       mnc: "2",
+  //       referenceSignalReceivedPower: "2",
+  //       referenceSignalReceivedQuality: "2",
+  //       requestedActiveTime: "2",
+  //       requestedPeriodicTrackingAreaUpdate: "2",
+  //       tac: "2",
+  //       updatedAt: new Date(),
+  //     },
+  //   },
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // },
+  // {
+  //   id: "8",
+  //   deviceId: "2",
+  //   fullname: "2",
+  //   email: "2",
+  //   phone: "2",
+  //   battery: {
+  //     source: "2",
+  //     voltage: 0,
+  //   },
+  //   sim: {
+  //     imsi: "2",
+  //   },
+  //   sensors: {
+  //     smokeValue: 0,
+  //   },
+  //   signal: {
+  //     band: "2",
+  //     deviceNetworkRssiDbm: 0,
+  //     gsmStatus: "2",
+  //     networkReport: {
+  //       absoluteRadioFrequencyChannel: "2",
+  //       areaTacChangeCount: "2",
+  //       cellChangeCount: "2",
+  //       cellId: "2",
+  //       connectionStatus: "2",
+  //       extendedDiscontinuousReception: "2",
+  //       ipAddress: "2",
+  //       mcc: "2",
+  //       mnc: "2",
+  //       referenceSignalReceivedPower: "2",
+  //       referenceSignalReceivedQuality: "2",
+  //       requestedActiveTime: "2",
+  //       requestedPeriodicTrackingAreaUpdate: "2",
+  //       tac: "2",
+  //       updatedAt: new Date(),
+  //     },
+  //   },
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // },
+  // {
+  //   id: "9",
+  //   deviceId: "2",
+  //   fullname: "2",
+  //   email: "2",
+  //   phone: "2",
+  //   battery: {
+  //     source: "2",
+  //     voltage: 0,
+  //   },
+  //   sim: {
+  //     imsi: "2",
+  //   },
+  //   sensors: {
+  //     smokeValue: 0,
+  //   },
+  //   signal: {
+  //     band: "2",
+  //     deviceNetworkRssiDbm: 0,
+  //     gsmStatus: "2",
+  //     networkReport: {
+  //       absoluteRadioFrequencyChannel: "2",
+  //       areaTacChangeCount: "2",
+  //       cellChangeCount: "2",
+  //       cellId: "2",
+  //       connectionStatus: "2",
+  //       extendedDiscontinuousReception: "2",
+  //       ipAddress: "2",
+  //       mcc: "2",
+  //       mnc: "2",
+  //       referenceSignalReceivedPower: "2",
+  //       referenceSignalReceivedQuality: "2",
+  //       requestedActiveTime: "2",
+  //       requestedPeriodicTrackingAreaUpdate: "2",
+  //       tac: "2",
+  //       updatedAt: new Date(),
+  //     },
+  //   },
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // },
 ];
 
 export default function TabTwoScreen() {
@@ -400,7 +401,7 @@ export default function TabTwoScreen() {
   const [isExtended, setIsExtended] = React.useState(true);
 
   const isIOS = Platform.OS === "ios";
-
+  const colorScheme = useColorScheme();
   const onScroll = ({ nativeEvent }: { nativeEvent: any }) => {
     const currentScrollPosition =
       Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
@@ -432,105 +433,125 @@ export default function TabTwoScreen() {
           </View>
           <Divider></Divider>
           <SafeAreaView style={styles.fabContainer}>
-            <ScrollView onScroll={onScroll}>
-              {deviceList.map((device) => (
-                <React.Fragment key={device.id}>
-                  <SafeAreaView>
-                    <Pressable
-                      style={styles.item}
-                      onPressOut={() => {
-                        router.navigate("/");
-                      }}
-                      // {
-                      //   pathname: "/device/[deviceId]",
-                      //   params: { deviceId: "bacon" },
-                      // }
-                    >
-                      <Card.Title
-                        title={<Text>Thiết Bị 1</Text>}
-                        left={(props) => (
-                          <Avatar.Icon icon="devices" {...props} />
-                        )}
-                        right={(props) => (
-                          <View style={styles.itemRight}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginRight: 16,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  marginBottom: -4,
-                                  fontSize: 12,
-                                }}
-                              >
-                                40%
-                              </Text>
-                              <FontAwesome
-                                name="battery-2"
-                                size={24}
-                                color="black"
-                              />
-                            </View>
-                            <CircularProgress
-                              width={80}
-                              height={80}
-                              value={40}
-                              targetValue={200}
-                              // status={false}
-                              {...props}
-                            ></CircularProgress>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginLeft: 20,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  marginBottom: -2,
-                                  fontSize: 12,
-                                }}
-                              >
-                                2 giờ
-                              </Text>
+            <ScrollView
+              onScroll={onScroll}
+              style={{ marginRight: 0, marginBottom: 44 }}
+            >
+              {deviceList.map((device) => {
+                //   Meunu
+                const [visible, setVisible] = React.useState(false);
 
-                              <MaterialIcons
-                                name="update"
-                                size={24}
-                                color="black"
+                const openMenu = () => setVisible(true);
+
+                const closeMenu = () => setVisible(false);
+
+                return (
+                  <React.Fragment key={device.id}>
+                    <Card
+                      title={"Thiết bị 1"}
+                      deviceId="abc"
+                      status={false}
+                      right={
+                        <SafeAreaView>
+                          <Menu
+                            visible={visible}
+                            onDismiss={closeMenu}
+                            anchor={
+                              <IconButton
+                                icon="dots-vertical-circle-outline"
+                                iconColor={
+                                  Colors[colorScheme ?? "light"].primary
+                                }
+                                size={32}
+                                onPress={openMenu}
                               />
-                            </View>
-                          </View>
-                        )}
-                      />
+                            }
+                          >
+                            <Menu.Item
+                              onPress={() => {
+                                closeMenu();
+                                router.navigate({
+                                  pathname: "/device/[deviceId]",
+                                  params: { deviceId: "bacon" },
+                                });
+                              }}
+                              title="Chi Tiết"
+                            />
+                            <Divider />
+                            <Menu.Item onPress={() => {}} title="Share" />
+                          </Menu>
+                        </SafeAreaView>
+                      }
+                    >
+                      <Avatar.Icon size={96} icon="devices" />
+                      <View>
+                        <CircularProgress
+                          width={80}
+                          height={80}
+                          value={40}
+                          targetValue={200}
+                          status={false}
+                        ></CircularProgress>
+                      </View>
+
                       <View
                         style={{
-                          position: "absolute",
                           display: "flex",
-                          flexDirection: "row",
-                          right: 20,
-                          bottom: 0,
+                          flexDirection: "column",
+                          justifyContent: "center",
                           alignItems: "center",
                         }}
                       >
-                        <Text style={{ fontSize: 12 }}>Status: </Text>
-                        <Text style={{ fontSize: 12, color: "#40A2E3" }}>
-                          ON
+                        <Text
+                          style={{
+                            marginBottom: -2,
+                            fontSize: 16,
+                          }}
+                        >
+                          2 giờ
                         </Text>
+
+                        <MaterialIcons name="update" size={36} color="black" />
                       </View>
-                    </Pressable>
-                  </SafeAreaView>
-                  <Divider></Divider>
-                </React.Fragment>
-              ))}
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: 0,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginBottom: -6,
+                            fontSize: 16,
+                            fontStyle: "italic",
+                            fontWeight: "600",
+                            color: Colors[colorScheme ?? "light"].primary,
+                          }}
+                        >
+                          40%
+                        </Text>
+                        <FontAwesome name="battery-2" size={32} color="black" />
+                      </View>
+                    </Card>
+                    {/* <SafeAreaView>
+                    <Pressable
+                      style={styles.item}
+                      onPressOut={() => {
+                        router.navigate({
+                          pathname: "/device/[deviceId]",
+                          params: { deviceId: "bacon" },
+                        });
+                      }}
+                    > */}
+
+                    {/* </Pressable>
+                  </SafeAreaView> */}
+                    <Divider></Divider>
+                  </React.Fragment>
+                );
+              })}
             </ScrollView>
           </SafeAreaView>
         </View>

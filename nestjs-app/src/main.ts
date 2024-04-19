@@ -4,11 +4,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import 'dotenv/config';
 import { CoapService } from './coap/coap.service';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 async function bootstrap() {
   const port = process.env.NESTJS_APP_DOCKER_PORT;
 
   const app = await NestFactory.create(AppModule);
+  app.useGlobalFilters(new HttpExceptionFilter());
   const config = new DocumentBuilder()
     .setTitle('IoT Server')
     .setDescription('Server IOT Coap build from NestJs')

@@ -6,6 +6,7 @@ import {
   Request,
   Get,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
@@ -14,6 +15,7 @@ import { UsersDto } from 'src/users/users.dto';
 import { RefreshJwtGuard } from './guards/refresh.guard';
 import { RedisService } from 'src/redis/redis.service';
 import { JwtGuard } from './guards/jwt.guard';
+import { HttpExceptionFilter } from 'src/http-exception.filter';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +24,7 @@ export class AuthController {
     private authService: AuthService,
     private readonly redisService: RedisService,
   ) {}
+  @UseFilters(new HttpExceptionFilter())
   @Post('register')
   async registerUser(@Body() dto: UsersDto) {
     return this.authService.register(dto);
@@ -34,10 +37,12 @@ export class AuthController {
     console.log(data.email);
     return await this.userService.requestResetPassword(data.email);
   }
+
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return await this.authService.login(dto);
   }
+
   @UseGuards(RefreshJwtGuard)
   @Post('refresh')
   async refreshToken(@Request() req) {

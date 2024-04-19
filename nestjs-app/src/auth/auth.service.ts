@@ -29,7 +29,7 @@ export class AuthService {
       excludeExtraneousValues: true,
     });
     const payload = {
-      username: user.username,
+      email: user.email,
       sub: {
         role: user.role,
       },
@@ -50,7 +50,7 @@ export class AuthService {
       user: plainToClass(
         UsersDto,
         {
-          customer_id: customer.customer_id,
+          customer_id: customer?.customer_id ?? '',
           ...user,
         },
         { excludeExtraneousValues: true },
@@ -68,7 +68,7 @@ export class AuthService {
       return newUser;
     } catch (error) {
       console.error('Error while registering user:', error);
-      throw new Error('Failed to register user');
+      throw new Error(`Failed to register user: ${error.message}`);
     }
   }
 
@@ -78,7 +78,7 @@ export class AuthService {
     return { result: 'success' };
   }
   async validateUser(dto: LoginDto) {
-    const user = await this.userService.findOneUserWithUsername(dto.username);
+    const user = await this.userService.findOneUserWithEmail(dto.email);
     if (user && (await compare(dto.password, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -92,11 +92,9 @@ export class AuthService {
     });
   }
   async refreshToken(userDto: UsersDto) {
-    const user = await this.userService.findOneUserWithUsername(
-      userDto.username,
-    );
+    const user = await this.userService.findOneUserWithEmail(userDto.email);
     const payload = {
-      username: user.username,
+      email: user.email,
       sub: {
         role: user.role,
       },

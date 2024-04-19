@@ -1,14 +1,16 @@
 import React, { Fragment, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Image, Pressable } from "react-native";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { AntDesign } from "@expo/vector-icons";
 import DrawerItems, { DrawerItemType } from "@/components/ui/DrawerItems";
 import { FAB, IconButton, Portal } from "react-native-paper";
 import { View } from "@/components/Themed";
+import Draggable from "react-native-draggable";
+import { AntDesign } from "@expo/vector-icons";
+
 const DrawerItemsData: DrawerItemType[] = [
   { label: "Thông Tin Khách Hàng", icon: "account-box", key: 0 },
   { label: "Thông Báo", icon: "account-box", key: 1 },
@@ -17,7 +19,7 @@ const DrawerItemsData: DrawerItemType[] = [
   { label: "Gửi báo cáo", icon: "send", key: 2 },
 ];
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
+export function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
 }) {
@@ -66,7 +68,7 @@ export default function TabLayout() {
             ),
             tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
             headerRight: () => (
-              <Link href="/settings/" asChild>
+              <Link href="/chatbox/" asChild>
                 <Pressable>
                   {({ pressed }) => (
                     <Ionicons
@@ -105,6 +107,22 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
+      <Portal>
+        <View>
+          <Draggable
+            x={200}
+            y={300}
+            onPressOut={() => {}}
+            isCircle={true}
+            renderColor="#fff"
+            children={
+              <View style={{ borderRadius: 9999, padding: 8 }}>
+                <AntDesign name="customerservice" size={36} color="black" />
+              </View>
+            }
+          />
+        </View>
+      </Portal>
     </View>
   );
 }

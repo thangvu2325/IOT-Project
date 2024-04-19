@@ -11,6 +11,8 @@ export class UsersDto extends BaseDto {
   @Expose()
   email: string;
   @Expose()
+  phone: string;
+  @Expose()
   isActive: boolean;
   @Expose()
   role: string;

@@ -94,19 +94,19 @@ export default function TabOneScreen() {
     React.useState<lineDataItem[]>(latestData);
   React.useEffect(() => {
     // Thiết lập interval
-    // const intervalId = setInterval(() => {
-    //   setCurrentData((prev) => [
-    //     ...prev,
-    //     {
-    //       value: Math.floor(Math.random() * (500 - 100 + 1)) + 100,
-    //       labelComponent: () => <Text>"24 Nov"</Text>,
-    //       hideDataPoint: true,
-    //     },
-    //   ]);
-    // }, 2000);
-    // // Cleanup function
-    // return () => clearInterval(intervalId);
-  }, []); // Dependency array để `useEffect` chỉ chạy một lần khi component được mount
+    const intervalId = setInterval(() => {
+      setCurrentData((prev) => [
+        ...prev,
+        {
+          value: Math.floor(Math.random() * (500 - 100 + 1)) + 100,
+          labelComponent: () => <Text>"24 Nov"</Text>,
+          hideDataPoint: true,
+        },
+      ]);
+    }, 2000);
+    // Cleanup function
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <View>

@@ -5,18 +5,43 @@ import {
   ThemeProvider,
   useRoute,
 } from "@react-navigation/native";
+import { enGB, registerTranslation } from "react-native-paper-dates";
 import { useFonts } from "expo-font";
 import { Stack, router, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Provider } from "react-native-paper";
-import { Text } from "@/components/Themed";
 import { SessionProvider } from "@/lib/ctx";
+registerTranslation("enGB", {
+  save: "Save",
+  selectSingle: "Select date",
+  selectMultiple: "Select dates",
+  selectRange: "Select period",
+  notAccordingToDateFormat: (inputFormat) =>
+    `Date format must be ${inputFormat}`,
+  mustBeHigherThan: (date) => `Must be later then ${date}`,
+  mustBeLowerThan: (date) => `Must be earlier then ${date}`,
+  mustBeBetween: (startDate, endDate) =>
+    `Must be between ${startDate} - ${endDate}`,
+  dateIsDisabled: "Day is not allowed",
+  previous: "Previous",
+  next: "Next",
+  typeInDate: "Type in date",
+  pickDateFromCalendar: "Pick date from calendar",
+  close: "Close",
+  hour: "",
+  minute: "",
+});
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
+
+registerTranslation("en-GB", enGB);
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -63,24 +88,13 @@ function RootLayoutNav() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
-              name="device/[deviceId]"
+              name="device"
               options={{
                 presentation: "modal",
-                headerTitle: () => {
-                  const route = useRoute();
-                  let deviceId = "";
-                  if (route.params && "deviceId" in route.params) {
-                    const params = route.params;
-                    deviceId = String(params.deviceId);
-                  }
-                  return (
-                    <Text style={{ fontSize: 18, fontWeight: "600" }}>
-                      Thiết Bị {deviceId}
-                    </Text>
-                  );
-                },
+                headerShown: false,
               }}
             />
+
             <Stack.Screen
               name="policy/index"
               options={{
@@ -93,8 +107,19 @@ function RootLayoutNav() {
               options={{ presentation: "modal", title: "test" }}
             />
             <Stack.Screen
+              name="chatbox"
+              options={{ presentation: "modal", headerShown: false }}
+            />
+            <Stack.Screen
               name="settings/index"
-              // options={{ presentation: "modal", title: "Cài Đặt" }}
+              options={{ presentation: "modal", title: "Cài Đặt" }}
+            />
+            <Stack.Screen
+              name="scanqr/index"
+              options={{
+                headerShown: false,
+                statusBarColor: "red",
+              }}
             />
             <Stack.Screen
               name="auth/sign-in"

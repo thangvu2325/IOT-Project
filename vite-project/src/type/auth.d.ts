@@ -3,7 +3,7 @@ export type registerType = {
   email: string;
   password: string;
 };
-export type loginType = Pick<registerType, "username" | "password">;
+export type loginType = Pick<registerType, "email" | "password">;
 export type userType = {
   id: string;
   username: string;

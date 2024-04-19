@@ -2,12 +2,14 @@ import { Fragment, FunctionComponent, ReactNode } from "react";
 import { Text, View } from "../Themed";
 import Field from "./Field";
 import { Divider } from "react-native-paper";
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 export type item = {
   itemKey: number;
   left?: ReactNode | string | FunctionComponent;
   right?: ReactNode | string;
+  rightStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
+  lelftStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
 };
 interface FieldListProps {
   title?: ReactNode | string;
@@ -31,9 +33,13 @@ const FieldList: FunctionComponent<FieldListProps> = ({
         style,
       ]}
     >
-      <View style={{ paddingHorizontal: 4, paddingVertical: 8 }}>
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>{title}</Text>
-      </View>
+      {title ? (
+        <View style={{ paddingHorizontal: 4, paddingVertical: 8 }}>
+          <Text style={{ fontSize: 16, fontWeight: "600" }}>{title}</Text>
+        </View>
+      ) : (
+        ""
+      )}
       {items.length
         ? items.map((item) => (
             <Fragment key={item.itemKey}>
@@ -46,6 +52,8 @@ const FieldList: FunctionComponent<FieldListProps> = ({
                   )
                 }
                 right={item.right}
+                rightStyle={item.rightStyle}
+                lelftStyle={item.lelftStyle}
               ></Field>
               <Divider></Divider>
             </Fragment>

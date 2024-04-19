@@ -10,7 +10,10 @@ import { z } from "zod";
 
 interface LoginPageProps {}
 const schema = z.object({
-  username: z.string().min(1),
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
   password: z.string().min(1),
 });
 
@@ -23,10 +26,10 @@ const remember = (
 ) => {
   if (rememberCheck.current) {
     if (rememberCheck.current.checked) {
-      localStorage.setItem("myapp-username", data.username);
+      localStorage.setItem("myapp-email", data.email);
       localStorage.setItem("myapp-password", data.password);
     } else {
-      localStorage.setItem("myapp-username", "");
+      localStorage.setItem("myapp-email", "");
       localStorage.setItem("myapp-password", "");
     }
   }
@@ -40,7 +43,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -61,11 +64,11 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
   useEffect(() => {
     // Check if window is defined (client side)
     if (typeof window !== "undefined") {
-      const usernameSaved = localStorage.getItem("myapp-username") || "";
+      const emailSaved = localStorage.getItem("myapp-email") || "";
       const password = localStorage.getItem("myapp-password") || "";
-      setValue("username", usernameSaved);
+      setValue("email", emailSaved);
       setValue("password", password);
-      if (rememberCheck.current && usernameSaved && password) {
+      if (rememberCheck.current && emailSaved && password) {
         rememberCheck.current.checked = true;
       }
     }
@@ -91,13 +94,13 @@ const LoginPage: FunctionComponent<LoginPageProps> = () => {
                 <input
                   placeholder="Your Email Address"
                   className="h-[60px] leading-[60px] w-[100%] rounded-[7px] outline-[#05f] block border-[2px] border-[#eee] border-solid py-[6px] pl-[48px] pr-[12px] text-[#212529] font-[600] text-[14px]"
-                  {...register("username", {
+                  {...register("email", {
                     required: "Field này là bắt buộc.",
                   })}
                 ></input>
-                {errors.username ? (
+                {errors.email ? (
                   <span className="text-[red] text-[14px] pl-[16px] mb-[-12px] block">
-                    {errors.username?.message}
+                    {errors.email?.message}
                   </span>
                 ) : (
                   ""

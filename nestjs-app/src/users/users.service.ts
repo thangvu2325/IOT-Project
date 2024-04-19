@@ -61,19 +61,17 @@ export class UsersService extends MysqlBaseService<UserEntity, UsersDto> {
 
     return { users: usersDtoArray, usersCount };
   }
-  async findOneUserWithUsername(username: string): Promise<UserEntity | null> {
+  async findOneUserWithEmail(email: string): Promise<UserEntity | null> {
     const user = await this.userReposity
       .createQueryBuilder('user')
-      .where('user.username = :username', { username })
+      .where('user.email = :email', { email })
       .leftJoinAndSelect('user.customer', 'customer')
       .getOne();
 
     return user || null;
   }
-  async requestResetPassword(
-    username: string,
-  ): Promise<{ newPassword: string }> {
-    const user = await this.findOneUserWithUsername(username);
+  async requestResetPassword(email: string): Promise<{ newPassword: string }> {
+    const user = await this.findOneUserWithEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');
     }

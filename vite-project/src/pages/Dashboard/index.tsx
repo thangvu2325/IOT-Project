@@ -12,8 +12,8 @@ import { FunctionComponent } from "react";
 interface DashboardPageProps {}
 
 const DashboardPage: FunctionComponent<DashboardPageProps> = () => {
-  const deviceCount = useAppSelector(devicesSelector).devicesCount;
-  const userCount = useAppSelector(customersSelector).usersCount;
+  const deviceCount = useAppSelector(devicesSelector)?.devicesCount;
+  const userCount = useAppSelector(customersSelector)?.usersCount;
   return (
     <div className="w-full h-full p-4">
       <Flex gap={16}>
