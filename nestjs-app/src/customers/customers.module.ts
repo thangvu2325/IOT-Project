@@ -6,7 +6,7 @@ import { CustomersEntity } from './customers.entity';
 import { UsersService } from 'src/users/users.service';
 import { CustomersController } from './customers.controller';
 import { UserEntity } from 'src/users/user.entity';
-import { CustomersService } from './Customers.service';
+import { CustomersService } from './customers.service';
 
 @Module({
   imports: [

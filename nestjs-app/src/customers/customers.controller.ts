@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CustomersService } from './Customers.service';
+import { CustomersService } from './customers.service';
 import { CustomersDto } from './customers.dto';
 import { UsersService } from 'src/users/users.service';
 

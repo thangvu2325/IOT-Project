@@ -9,7 +9,7 @@ import { RedisService } from 'src/redis/redis.service';
 import { UsersDto } from 'src/users/users.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
-import { CustomersService } from 'src/customers/Customers.service';
+import { CustomersService } from 'src/customers/customers.service';
 import { CustomersDto } from 'src/customers/customers.dto';
 const EXPIRE_TIME = 20 * 1000;
 

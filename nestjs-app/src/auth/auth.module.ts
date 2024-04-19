@@ -10,7 +10,7 @@ import { RedisModule } from 'src/redis/redis.module';
 import { PassportModule } from '@nestjs/passport';
 import { MailService } from 'src/mail/mail.service';
 import { CustomersModule } from 'src/customers/customers.module';
-import { CustomersService } from 'src/customers/Customers.service';
+import { CustomersService } from 'src/customers/customers.service';
 import { CustomersEntity } from 'src/customers/customers.entity';
 
 @Module({
