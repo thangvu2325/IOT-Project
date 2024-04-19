@@ -14,7 +14,7 @@ export class DevicesEntity extends BaseEntity {
   customer: CustomersEntity;
   @Column({ unique: true })
   deviceId: string;
-  @Column()
+  @Column({ default: 0 })
   rssi: number;
 
   @OneToOne(() => SensorsEntity)

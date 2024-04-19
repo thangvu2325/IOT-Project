@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { DevicesDto } from './dto/devices.dto';
 import { DevicesService } from './devices.service';
 
@@ -12,11 +12,8 @@ export class DevicesController {
   }> {
     return this.devicessService.findAll({});
   }
-  @Post(':customerId')
-  createDevice(
-    @Param('customerId') customerId: string,
-    @Body() Dto: DevicesDto,
-  ): Promise<{ result: string }> {
-    return this.devicessService.saveDevice(Dto, customerId);
+  @Post('')
+  createDevice(@Body() Dto: DevicesDto): Promise<{ result: string }> {
+    return this.devicessService.saveDevice(Dto);
   }
 }

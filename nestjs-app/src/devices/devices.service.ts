@@ -120,18 +120,8 @@ export class DevicesService extends MysqlBaseService<
 
     return { devices: devicesDtoArray, devicesCount };
   }
-  async saveDevice(
-    Dto: DevicesDto,
-    customer_id: string,
-  ): Promise<{ result: string }> {
+  async saveDevice(Dto: DevicesDto): Promise<{ result: string }> {
     try {
-      const customerFounded = await this.customersReposity
-        .createQueryBuilder('customers')
-        .leftJoinAndSelect('customers.devices', 'devices')
-        .where('customers.customer_id = :customer_id', {
-          customer_id: customer_id,
-        })
-        .getOne();
       const newBattery = await this.batteryReposity.save({} as BatteryEntity);
       const newSensor = await this.sensorsReposity.save({} as SensorsEntity);
       const newSim = await this.simReposity.save({} as SimEntity);
@@ -140,7 +130,7 @@ export class DevicesService extends MysqlBaseService<
         networkReport: newNetwork,
       } as SignalEntity);
       // Save the new device and await its completion
-      const newDevice = await this.devicesReposity.save({
+      await this.devicesReposity.save({
         ...Dto,
         deviceId: `device_${this.generateUniqueId()}`,
         battery: newBattery,
@@ -148,13 +138,6 @@ export class DevicesService extends MysqlBaseService<
         signal: newSignal,
         sim: newSim,
       });
-
-      if (customerFounded && customerFounded.devices) {
-        // Push the new device to the list of devices associated with the customer
-        customerFounded.devices.push(newDevice);
-        // Save the updated customer object
-        await this.customersReposity.save(customerFounded);
-      }
 
       return { result: 'thành công' };
     } catch (error) {
